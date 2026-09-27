@@ -16034,6 +16034,12 @@ public final class Settings {
          */
         public static final String NETWORK_TRAFFIC_DISPLAY_STYLE = "network_traffic_display_style";
 
+        /**
+         * Haptic effects profile to be used
+         * @hide
+         */
+        public static final String HAPTIC_EFFECTS_PROFILE = "haptic_effects_profile";
+
     }
 
     /**

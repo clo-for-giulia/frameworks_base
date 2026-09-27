@@ -373,5 +373,6 @@ public class SecureSettings {
         Settings.Secure.DOZE_PICK_UP_GESTURE_VIBRATE,
         Settings.Secure.TORCH_DOUBLE_TAP_POWER_GESTURE_ENABLED,
         Settings.Secure.TORCH_LONG_PRESS_POWER,
+        Settings.Secure.HAPTIC_EFFECTS_PROFILE,
     };
 }
