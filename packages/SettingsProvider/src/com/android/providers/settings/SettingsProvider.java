@@ -644,7 +644,21 @@ public class SettingsProvider extends ContentProvider {
 
     private String getSpoofedValue(String name) {
         String callingPackage = getCallingPackage();
+        if (callingPackage == null) {
+            try {
+                String[] packages = getContext().getPackageManager()
+                        .getPackagesForUid(Binder.getCallingUid());
+                if (packages != null && packages.length > 0) {
+                    callingPackage = packages[0];
+                }
+            } catch (Exception ignored) {}
+        }
         if (callingPackage == null) return null;
+        if (Settings.System.ACCELEROMETER_ROTATION.equals(name)) {
+            if ("com.oplus.camera".equals(callingPackage) || "com.oneplus.camera".equals(callingPackage)) {
+                return "1";
+            }
+        }
         if (callingPackage.startsWith("com.android.")
                 || callingPackage.startsWith("com.google.android.")) {
             return null;
