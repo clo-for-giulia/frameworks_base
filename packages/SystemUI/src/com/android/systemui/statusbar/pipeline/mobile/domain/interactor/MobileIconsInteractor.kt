@@ -161,7 +161,7 @@ constructor(
     private val mobileConnectionsRepo: MobileConnectionsRepository,
     private val carrierConfigTracker: CarrierConfigTracker,
     @MobileSummaryLog private val tableLogger: TableLogBuffer,
-    connectivityRepository: ConnectivityRepository,
+    private val connectivityRepository: ConnectivityRepository,
     userSetupRepo: UserSetupRepository,
     @Background private val scope: CoroutineScope,
     private val context: Context,
@@ -439,9 +439,14 @@ constructor(
             .stateIn(scope, SharingStarted.WhileSubscribed(), false)
 
     override val hideNoInternetState: StateFlow<Boolean> =
-        mobileConnectionsRepo.defaultDataSubRatConfig
-            .mapDirect { it?.hideNoInternetState ?: false }
-            .stateIn(scope, SharingStarted.WhileSubscribed(), false)
+        combine(
+            mobileConnectionsRepo.defaultDataSubRatConfig
+                .mapDirect { it?.hideNoInternetState ?: false },
+            connectivityRepository.showDataDisabledIcon,
+        ) { carrierHide, showDataDisabled ->
+            carrierHide || !showDataDisabled
+        }
+        .stateIn(scope, SharingStarted.WhileSubscribed(), false)
 
     override val networkTypeIconCustomization: StateFlow<MobileIconCustomizationMode> =
         mobileConnectionsRepo.defaultDataSubRatConfig
@@ -493,6 +498,7 @@ constructor(
                 context,
                 alwaysUseRsrpLevelForLte = alwaysUseRsrpLevelForLte,
                 hideNoInternetState = hideNoInternetState,
+                showRoamingIcon = connectivityRepository.showRoamingIcon,
                 networkTypeIconCustomizationFlow = networkTypeIconCustomization,
                 showVolteIcon = showVolteIcon,
                 showVowifiIcon = showVowifiIcon,

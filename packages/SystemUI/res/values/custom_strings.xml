@@ -264,4 +264,8 @@
     <!-- Empty notification shade under Liquid Glass -->
     <string name="liquid_glass_no_older_notifications">No Older Notifications</string>
 
+    <!-- Status bar icons -->
+    <string name="data_disabled_icon_title">Data disabled indicator</string>
+    <string name="roaming_indicator_icon_title">Roaming indicator</string>
+
 </resources>
